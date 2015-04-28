@@ -17,10 +17,6 @@ class Algorithm extends DefaultActor {
     }
 
     def sort() {
-        processors()
-    }
-
-    private int processors() {
         Runtime.getRuntime().availableProcessors()
     }
 
