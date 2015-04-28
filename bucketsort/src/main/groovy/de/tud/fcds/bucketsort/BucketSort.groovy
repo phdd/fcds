@@ -23,6 +23,7 @@ class BucketSort {
         cli.with {
             i longOpt: 'input', args: 1, argName: 'path', required: true, 'file of unsorted lines'
             o longOpt: 'output', args: 1, argName: 'path', required: true, 'target file for sorted lines'
+            b longOpt: 'buckets', args: 1, argName: 'count', 'number of buckets use'
         }
 
         def params = cli.parse(args)
