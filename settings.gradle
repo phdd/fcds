@@ -1,0 +1,3 @@
+rootProject.name = 'FCDS Lab'
+
+include ':bucketsort'
