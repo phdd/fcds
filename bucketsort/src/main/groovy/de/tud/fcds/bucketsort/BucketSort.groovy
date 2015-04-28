@@ -1,6 +1,4 @@
-package de.tud.fcds
-
-import de.tud.fcds.bucketsort.BucketSortAlgorithm
+package de.tud.fcds.bucketsort
 
 class BucketSort {
 
@@ -14,7 +12,7 @@ class BucketSort {
         assert inputFile.canRead()
         outputFile.createNewFile();
 
-        def algorithm = new BucketSortAlgorithm(inputFile, outputFile)
+        def algorithm = new Algorithm(inputFile, outputFile)
 
         algorithm.sort()
     }
