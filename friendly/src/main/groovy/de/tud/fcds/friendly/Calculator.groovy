@@ -5,7 +5,7 @@ import groovyx.gpars.actor.DefaultActor
 import static groovyx.gpars.GParsPool.withPool
 import static java.lang.Math.sqrt
 
-class NumberCalculator extends DefaultActor {
+class Calculator extends DefaultActor {
 
     int size
 

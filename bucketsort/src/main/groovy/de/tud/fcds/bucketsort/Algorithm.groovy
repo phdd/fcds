@@ -1,7 +1,5 @@
 package de.tud.fcds.bucketsort
 
-import groovyx.gbench.Benchmark
-
 import static groovyx.gpars.GParsPool.withPool
 
 class Algorithm {

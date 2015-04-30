@@ -1,4 +1,7 @@
-package de.tud.fcds.friendly
+package de.tud.fcds
+
+import de.tud.fcds.friendly.Algorithm
+import de.tud.fcds.friendly.Calculator
 
 class FriendlyNumbers {
 
@@ -11,10 +14,10 @@ class FriendlyNumbers {
         }
 
         def params = cli.parse(args)
-        int poolSize = Runtime.runtime.availableProcessors()
 
         if (params) {
-            def calc = new NumberCalculator(size: poolSize)
+            int poolSize = Runtime.runtime.availableProcessors()
+            def calc = new Calculator(size: poolSize)
             def algo = new Algorithm(
                     start: params.s.toLong(),
                     end: params.e.toLong(),

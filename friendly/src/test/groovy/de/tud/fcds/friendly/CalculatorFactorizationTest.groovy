@@ -6,17 +6,17 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized)
-class NumberCalculatorFactorizationTest {
+class CalculatorFactorizationTest {
 
-    NumberCalculator calculator
+    Calculator calculator
 
     def number
     def factors
 
-    NumberCalculatorFactorizationTest(def number, def factors) {
+    CalculatorFactorizationTest(def number, def factors) {
         this.number = number
         this.factors = factors
-        calculator = new NumberCalculator()
+        calculator = new Calculator()
     }
 
     @Test void factorization() {

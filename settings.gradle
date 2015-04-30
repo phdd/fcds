@@ -2,3 +2,5 @@ rootProject.name = 'FCDS Lab'
 
 include ':bucketsort', ':friendly'
 
+include 'knapsack'
+

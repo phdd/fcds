@@ -1,4 +1,6 @@
-package de.tud.fcds.bucketsort
+package de.tud.fcds
+
+import de.tud.fcds.bucketsort.Algorithm
 
 class BucketSort {
 
@@ -12,8 +14,9 @@ class BucketSort {
 
         def params = cli.parse(args)
 
-        if (params)
+        if (params) {
             new Algorithm(params.i, params.o).sort()
+        }
     }
 
 }

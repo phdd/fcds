@@ -6,16 +6,16 @@ import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 
 @RunWith(BlockJUnit4ClassRunner)
-class NumberCalculatorFractionTest {
+class CalculatorFractionTest {
 
     static final Fraction FRACTION_72_30   = [ numerator: 72,  denominator: 30  ]
     static final Fraction FRACTION_336_140 = [ numerator: 336, denominator: 140 ]
     static final Fraction FRACTION_12_5    = [ numerator: 12,  denominator: 5   ]
 
-    NumberCalculator calculator
+    Calculator calculator
 
     @Before void init() {
-        calculator = new NumberCalculator()
+        calculator = new Calculator()
     }
 
     @Test void factorization() {
