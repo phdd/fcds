@@ -1,39 +1,62 @@
 package de.tud.fcds.bucketsort
 
-import de.tud.fcds.bucketsort.entity.Worker
-import groovyx.gpars.actor.DefaultActor
+import static groovyx.gpars.GParsPool.withPool
 
-class Algorithm extends DefaultActor {
+class Algorithm {
 
-    long items
-    File target
-    Scanner scanner
-    List<Worker> workers
+    static final int ASCII_CHAR_COUNT = 128
 
-    Algorithm(File input, File output) {
-        this(input, output, Runtime.getRuntime().availableProcessors(), 100)
-    }
+    List<List> buckets
 
-    Algorithm(File input, File output, long workerCount) {
-        this(input, output, workerCount, 100)
-    }
+    File input
+    File output
 
-    Algorithm(File input, File output, long workerCount, long bucketCount) {
-        scanner = new Scanner(input)
-        items = firstLineOf input toLong()
-        target = output
-        workers = [0..workerCount].collect { new Worker().start() }
-    }
-
-    String firstLineOf(File file) {
-        new BufferedReader(new FileReader(file)).readLine()
+    Algorithm(String inputPath, String outputPath) {
+        input = new File(inputPath)
+        output = new File(outputPath)
+        buckets = (1..ASCII_CHAR_COUNT).collect { [] }
     }
 
     def sort() {
+        inputFileToBuckets()
+        sortBucketsParallel()
+        bucketsToOutputFile()
+    }
 
-        while (scanner.hasNextLine()) {
+    def inputFileToBuckets() {
+        def items
 
+        input.eachLine {
+            if (items == null) items = it.toLong()
+            else toBucket it
         }
+    }
+
+    def sortBucketsParallel() {
+        withPool {
+            buckets.eachParallel {
+                it.sort()
+            }
+        }
+    }
+
+    def bucketsToOutputFile() {
+        output.withWriter { writer ->
+            buckets.each { bucket ->
+                bucket.each { line ->
+                    writer.write "$line\n"
+                }
+            }
+        }
+    }
+
+    def toBucket(String line) {
+        def associatedBucket = firstCharacterOf(line) % buckets.size()
+        buckets.get(associatedBucket).add line
+    }
+
+    int firstCharacterOf(String line) {
+        (int) line.charAt(0)
     }
 
 }
