@@ -10,6 +10,7 @@ subprojects {
         compile 'org.codehaus.groovy:groovy-all:2.3.6'
         compile 'org.codehaus.gpars:gpars:1.2.1'
         compile 'commons-cli:commons-cli:1.2'
+        compile 'org.gperfutils:gbench:0.4.3-groovy-2.3'
 
         testCompile 'junit:junit:4.8.2'
     }

@@ -1,5 +1,7 @@
 package de.tud.fcds.bucketsort
 
+import groovyx.gbench.Benchmark
+
 import static groovyx.gpars.GParsPool.withPool
 
 class Algorithm {
@@ -56,7 +58,7 @@ class Algorithm {
     }
 
     int firstCharacterOf(String line) {
-        (int) line.charAt(0)
+        line.charAt(0) as int
     }
 
 }
