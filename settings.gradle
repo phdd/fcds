@@ -1,3 +1,4 @@
 rootProject.name = 'FCDS Lab'
 
-include ':bucketsort'
+include ':bucketsort', ':friendly'
+
