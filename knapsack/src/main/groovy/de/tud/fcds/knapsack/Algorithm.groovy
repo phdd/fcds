@@ -2,27 +2,28 @@ package de.tud.fcds.knapsack
 
 import static groovyx.gpars.GParsPool.withPool
 
-class Algorithm {
+class Algorithm implements FileAware {
 
-    int size
-    List<Item> items
-    int capacity
+    def poolSize
+    def inputPath
 
-    Algorithm(String inputPath, int size) {
-        List lines = new File(inputPath).collect { it.split() }
-        this.size = size
-        capacity = lines.first()[1].toInteger()
-        items = lines.drop(0).collect {
-            new Item(value: it[0].toInteger(), weight: it[1].toInteger())
-        }
-    }
+    def capacity
+    List items
+    List table
 
     def solve() {
+        table = read inputPath using { split ' ' }
+        capacity = get row: 0, col: 1 from table
+        items = map table.drop(0) using {
+            [ value:  getAt(0) as Integer,
+              weight: getAt(1) as Integer ] as Item
+        }
+
         items.sort()
 
-        withPool(size, {
+        withPool poolSize, {
 
-        })
+        }
     }
 
 }

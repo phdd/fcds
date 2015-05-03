@@ -15,7 +15,7 @@ class Knapsack {
 
         if (params) {
             int poolSize = Runtime.runtime.availableProcessors()
-            println new Algorithm(params.i, poolSize).solve()
+            println new Algorithm(inputPath: params.i, poolSize: poolSize).solve()
         }
     }
 
