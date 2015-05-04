@@ -3,7 +3,7 @@ package de.tud.fcds.knapsack
 trait FileAware {
 
     def map(List<List<String>> table) {
-        [using: { Closure processor ->
+        [by: { Closure processor ->
             table.collect {
                 processor.delegate = it
                 processor.call()

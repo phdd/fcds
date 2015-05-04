@@ -15,7 +15,11 @@ class Knapsack {
 
         if (params) {
             int poolSize = Runtime.runtime.availableProcessors()
-            println new Algorithm(inputPath: params.i, poolSize: poolSize).solve()
+            def solution = new Algorithm(inputPath: params.i, poolSize: poolSize).solve()
+
+            solution.each { println "$it.count * $it.item" }
+            println "\nTotal Weight: ${solution.collect { it.item.weight * it.count }.sum()}"
+            println "Total Profit: ${solution.collect { it.item.profit * it.count }.sum()}"
         }
     }
 

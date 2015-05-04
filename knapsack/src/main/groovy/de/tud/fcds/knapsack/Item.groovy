@@ -6,11 +6,11 @@ import groovy.transform.ToString
 @ToString(includeNames = true, includePackage = false)
 @Immutable class Item implements Comparable<Item> {
 
-    int value
-    int weight
+    BigDecimal profit
+    BigDecimal weight
 
-    double density() {
-        value / weight
+    BigDecimal density() {
+        profit / weight
     }
 
     @Override int compareTo(Item other) {
