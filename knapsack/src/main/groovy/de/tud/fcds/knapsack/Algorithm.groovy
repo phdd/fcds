@@ -19,8 +19,6 @@ class Algorithm implements FileAware {
               weight: getAt(1) as Integer ] as Item
         }
 
-        items.sort()
-
         withPool poolSize, {
             knapsack items, capacity.toInteger()
         }
