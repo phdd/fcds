@@ -12,6 +12,13 @@
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/league.css" id="theme">
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			pre,
+			pre > code.hljs {
+				box-shadow: none !important;
+				background: none !important;
+			}
+		</style>
 
 		<script>
 			var link = document.createElement( 'link' );
@@ -149,11 +156,11 @@ def console = actor {
 				<section>
 					<section>
 						<h1>Bucketsort</h1>
-						<h5>Parallel Groovy Solution</h5>
+						<h5>Thread-based Groovy Solution</h5>
 					</section>
-					<section>
+					<!-- section>
 						<h5>Initialization</h5>
-						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
 						<pre style="padding: .5em; margin: 0; line-height: 125%"><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Algorithm</span> <span style="color: #f92672">{</span>
 
     <span style="color: #66d9ef">static</span> <span style="color: #66d9ef">final</span> <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">ASCII_CHAR_COUNT</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">128</span>
@@ -180,10 +187,10 @@ def console = actor {
 <span style="color: #f92672">}</span>
 </pre></div>
 
-					</section>
+					</section-->
 
 					<section>
-						<h5>Details</h5>
+						<h5>Algorithm</h5>
 						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
 						<pre style="padding: .5em; margin: 0; line-height: 125%">
 <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">inputFileToBuckets</span><span style="color: #f92672">()</span> <span style="color: #f92672">{</span>
@@ -209,9 +216,9 @@ def console = actor {
 
 					</section>
 
-					<section>
+					<!--section>
 						<h5>Helper</h5>
-						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
 						<pre style="padding: .5em; margin: 0; line-height: 125%">
 
 <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">toBucket</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">String</span> <span style="color: #f8f8f2">line</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
@@ -224,7 +231,104 @@ def console = actor {
 <span style="color: #f92672">}</span>
 </pre></div>
 
+					</section-->
+				</section>
+
+				<section>
+					<section>
+						<h1>Friendly Numbers</h1>
+						<h5>Actor-based Groovy Solution</h5>
 					</section>
+
+					<section>
+						<h5>Fraction Calculator</h5>
+						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<pre style="margin: 0; line-height: 125%"><span style="color: #a6e22e">@Override</span> <span style="color: #66d9ef">void</span> <span style="color: #f8f8f2">act</span><span style="color: #f92672">()</span> <span style="color: #f92672">{</span>
+    <span style="color: #f8f8f2">loop</span> <span style="color: #f92672">{</span>
+        <span style="color: #f8f8f2">react</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">reply</span> <span style="color: #f8f8f2">fractionsWithin</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">it</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">IntRange</span><span style="color: #f92672">)</span> <span style="color: #f92672">}</span>
+    <span style="color: #f92672">}</span>
+<span style="color: #f92672">}</span>
+
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">fractionsWithin</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">IntRange</span> <span style="color: #f8f8f2">range</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
+    <span style="color: #f8f8f2">withPool</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">size</span><span style="color: #f92672">,</span> <span style="color: #f92672">{</span>
+        <span style="color: #f8f8f2">range</span><span style="color: #f92672">.</span><span style="color: #a6e22e">collectParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">fractionFor</span> <span style="color: #f8f8f2">it</span> <span style="color: #f92672">}</span>
+    <span style="color: #f92672">})</span>
+<span style="color: #f92672">}</span>
+
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">fractionFor</span><span style="color: #f92672">(</span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">number</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
+    <span style="color: #f92672">[</span>   <span style="color: #f8f8f2">numerator:</span> <span style="color: #f8f8f2">factorsOf</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">number</span><span style="color: #f92672">).</span><span style="color: #a6e22e">sum</span><span style="color: #f92672">(),</span>
+        <span style="color: #f8f8f2">denominator:</span> <span style="color: #f8f8f2">number</span>
+    <span style="color: #f92672">]</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">Fraction</span>
+<span style="color: #f92672">}</span>
+</pre></div>
+					</section>
+
+					<section>
+						<h5>Friend Finder</h5>
+						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<pre style="margin: 0; line-height: 125%"><span style="color: #a6e22e">@Override</span> <span style="color: #66d9ef">void</span> <span style="color: #f8f8f2">handleStart</span><span style="color: #f92672">()</span> <span style="color: #f92672">{</span>
+    <span style="color: #66d9ef">super</span><span style="color: #f92672">.</span><span style="color: #a6e22e">handleStart</span><span style="color: #f92672">()</span>
+    <span style="color: #f8f8f2">calculator</span><span style="color: #f92672">.</span><span style="color: #a6e22e">send</span> <span style="color: #f8f8f2">start</span><span style="color: #f92672">..</span><span style="color: #a6e22e">end</span>
+    <span style="color: #f8f8f2">calculator</span><span style="color: #f92672">.</span><span style="color: #a6e22e">stop</span><span style="color: #f92672">()</span>
+<span style="color: #f92672">}</span>
+
+<span style="color: #a6e22e">@Override</span> <span style="color: #66d9ef">void</span> <span style="color: #f8f8f2">act</span><span style="color: #f92672">()</span> <span style="color: #f92672">{</span>
+    <span style="color: #f8f8f2">react</span> <span style="color: #f92672">{</span>
+        <span style="color: #f8f8f2">findAllFriendsWithin</span> <span style="color: #f8f8f2">it</span>
+    <span style="color: #f92672">}</span>
+<span style="color: #f92672">}</span>
+
+<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">findAllFriendsWithin</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">List</span> <span style="color: #f8f8f2">list</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
+    <span style="color: #f8f8f2">callback</span> <span style="color: #a6e22e">withPool</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">size</span><span style="color: #f92672">,</span> <span style="color: #f92672">{</span>
+        <span style="color: #f8f8f2">list</span><span style="color: #f92672">.</span><span style="color: #a6e22e">collectParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">fraction</span> <span style="color: #f92672">-&gt;</span>
+                <span style="color: #f8f8f2">list</span><span style="color: #f92672">.</span><span style="color: #a6e22e">findAll</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">fraction</span> <span style="color: #f92672">}</span>
+                    <span style="color: #f92672">.</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">denominator</span> <span style="color: #f92672">}</span>
+        <span style="color: #f92672">}.</span><span style="color: #a6e22e">findAllParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">size</span> <span style="color: #f92672">&gt;</span> <span style="color: #ae81ff">1</span> <span style="color: #f92672">}</span>
+         <span style="color: #f92672">.</span><span style="color: #a6e22e">unique</span><span style="color: #f92672">()</span>
+    <span style="color: #f92672">})</span>
+<span style="color: #f92672">}</span>
+</pre></div>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Unbounded Knapsack</h1>
+						<h5>Thread-based Groovy Solution</h5>
+					</section>
+
+					<section>
+						<h5>Algorithm</h5>
+						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">knapsack</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">items</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">BigDecimal</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">profit</span> <span style="color: #f92672">=</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">list</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f8f8f2">list</span><span style="color: #f92672">.</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span>
+            <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">profit</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}.</span><span style="color: #a6e22e">sum</span><span style="color: #f92672">()</span> <span style="color: #f92672">}</span>
+
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">n</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">.</span><span style="color: #a6e22e">size</span><span style="color: #f92672">()</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">wm</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">m</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">w</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">[]</span> <span style="color: #f92672">}</span> <span style="color: #f92672">}</span>
+
+        <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">eachParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-&gt;</span>
+            <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">each</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-&gt;</span>
+                <span style="color: #f8f8f2">Item</span> <span style="color: #f8f8f2">item</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">]</span>
+                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
+                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">bi</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">intdiv</span> <span style="color: #f8f8f2">itemWeight</span>
+
+                <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span><span style="color: #f92672">]</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">bi</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">-&gt;</span>
+                    <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">count</span><span style="color: #f92672">]</span>
+                        <span style="color: #f92672">+</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">item:</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">count:</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">]]</span>
+
+                <span style="color: #f92672">}.</span><span style="color: #a6e22e">max</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">profit</span><span style="color: #f92672">).</span><span style="color: #a6e22e">findAll</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}}}</span>
+
+        <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">n</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">wm</span><span style="color: #f92672">]</span>
+    <span style="color: #f92672">}</span>
+</pre></div>
+					</section>
+				</section>
+
+				<section>
+					<h1>Benchmark Results</h1>
+
 				</section>
 
 				<section>
