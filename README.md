@@ -11,6 +11,10 @@ Get slides @[phdd.github.io/fcds](http://phdd.github.io/fcds)
 
 - you'll find the zip-file in the *distributions* directory
   (e.g. *bucketsort/build/distributions/bucketsort.zip*)
+  
+## Benchmark
+
+    ![Benchmark for Friendly Numbers](https://raw.githubusercontent.com/phdd/fcds/gh-pages/benchmark.png)
 
 ## License
 
