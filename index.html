@@ -236,6 +236,41 @@ def console = actor {
 
 				<section>
 					<section>
+						<h1>Unbounded Knapsack</h1>
+						<h5>Thread-based Groovy Solution</h5>
+					</section>
+
+					<section>
+						<h5>Algorithm</h5>
+						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
+						<pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">knapsack</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">items</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">BigDecimal</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">profit</span> <span style="color: #f92672">=</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">list</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f8f8f2">list</span><span style="color: #f92672">.</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span>
+            <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">profit</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}.</span><span style="color: #a6e22e">sum</span><span style="color: #f92672">()</span> <span style="color: #f92672">}</span>
+
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">n</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">.</span><span style="color: #a6e22e">size</span><span style="color: #f92672">()</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">wm</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
+        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">m</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">w</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">[]</span> <span style="color: #f92672">}</span> <span style="color: #f92672">}</span>
+
+        <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">eachParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-&gt;</span>
+            <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">each</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-&gt;</span>
+                <span style="color: #f8f8f2">Item</span> <span style="color: #f8f8f2">item</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">]</span>
+                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
+                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">bi</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">intdiv</span> <span style="color: #f8f8f2">itemWeight</span>
+
+                <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span><span style="color: #f92672">]</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">bi</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">-&gt;</span>
+                    <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">count</span><span style="color: #f92672">]</span>
+                        <span style="color: #f92672">+</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">item:</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">count:</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">]]</span>
+
+                <span style="color: #f92672">}.</span><span style="color: #a6e22e">max</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">profit</span><span style="color: #f92672">).</span><span style="color: #a6e22e">findAll</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}}}</span>
+
+        <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">n</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">wm</span><span style="color: #f92672">]</span>
+    <span style="color: #f92672">}</span>
+</pre></div>
+					</section>
+				</section>
+
+				<section>
+					<section>
 						<h1>Friendly Numbers</h1>
 						<h5>Actor-based Groovy Solution</h5>
 					</section>
@@ -292,43 +327,8 @@ def console = actor {
 				</section>
 
 				<section>
-					<section>
-						<h1>Unbounded Knapsack</h1>
-						<h5>Thread-based Groovy Solution</h5>
-					</section>
-
-					<section>
-						<h5>Algorithm</h5>
-						<!-- HTML generated using hilite.me --><div style="background: transparent; overflow:auto;width:auto;border:none transparent;border-width:.5em .5em .5em .5em;padding:.2em .6em;">
-						<pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">knapsack</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">items</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">BigDecimal</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">)</span> <span style="color: #f92672">{</span>
-        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">profit</span> <span style="color: #f92672">=</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">list</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f8f8f2">list</span><span style="color: #f92672">.</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span>
-            <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">profit</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}.</span><span style="color: #a6e22e">sum</span><span style="color: #f92672">()</span> <span style="color: #f92672">}</span>
-
-        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">n</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">.</span><span style="color: #a6e22e">size</span><span style="color: #f92672">()</span>
-        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">wm</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">capacity</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
-        <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">m</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">w</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f92672">[]</span> <span style="color: #f92672">}</span> <span style="color: #f92672">}</span>
-
-        <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">wm</span><span style="color: #f92672">).</span><span style="color: #a6e22e">eachParallel</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-&gt;</span>
-            <span style="color: #f92672">(</span><span style="color: #ae81ff">1</span><span style="color: #f92672">..</span><span style="color: #a6e22e">n</span><span style="color: #f92672">).</span><span style="color: #a6e22e">each</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-&gt;</span>
-                <span style="color: #f8f8f2">Item</span> <span style="color: #f8f8f2">item</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">items</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">]</span>
-                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">.</span><span style="color: #a6e22e">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">unscaledValue</span><span style="color: #f92672">()</span>
-                <span style="color: #66d9ef">def</span> <span style="color: #f8f8f2">bi</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">weight</span><span style="color: #f92672">.</span><span style="color: #a6e22e">intdiv</span> <span style="color: #f8f8f2">itemWeight</span>
-
-                <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span><span style="color: #f92672">]</span> <span style="color: #f92672">=</span> <span style="color: #f92672">(</span><span style="color: #ae81ff">0</span><span style="color: #f92672">..</span><span style="color: #a6e22e">bi</span><span style="color: #f92672">).</span><span style="color: #a6e22e">collect</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">-&gt;</span>
-                    <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">itemIndex</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">weight</span> <span style="color: #f92672">-</span> <span style="color: #f8f8f2">itemWeight</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">count</span><span style="color: #f92672">]</span>
-                        <span style="color: #f92672">+</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">item:</span> <span style="color: #f8f8f2">item</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">count:</span> <span style="color: #f8f8f2">count</span> <span style="color: #f92672">]]</span>
-
-                <span style="color: #f92672">}.</span><span style="color: #a6e22e">max</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">profit</span><span style="color: #f92672">).</span><span style="color: #a6e22e">findAll</span> <span style="color: #f92672">{</span> <span style="color: #f8f8f2">it</span><span style="color: #f92672">.</span><span style="color: #a6e22e">count</span> <span style="color: #f92672">}}}</span>
-
-        <span style="color: #f8f8f2">m</span><span style="color: #f92672">[</span><span style="color: #f8f8f2">n</span><span style="color: #f92672">][</span><span style="color: #f8f8f2">wm</span><span style="color: #f92672">]</span>
-    <span style="color: #f92672">}</span>
-</pre></div>
-					</section>
-				</section>
-
-				<section>
-					<h1>Benchmark Results</h1>
-
+					<h1>Benchmark</h1>
+                    <img src="/benchmark.png" />
 				</section>
 
 				<section>
