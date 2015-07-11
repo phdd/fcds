@@ -9,12 +9,13 @@ class Knapsack {
 
         cli.with {
             i longOpt: 'input', args: 1, argName: 'path', required: true, 'file of space separated values and weights'
+            p longOpt: 'processors', args: 1, argName: 'number', required: true, 'number of processors to use'
         }
 
         def params = cli.parse(args)
 
         if (params) {
-            int poolSize = Runtime.runtime.availableProcessors()
+            int poolSize = params.p as Integer
             def solution = new Algorithm(inputPath: params.i, poolSize: poolSize).solve()
 
             solution.each { println "$it.count * $it.item" }

@@ -11,12 +11,13 @@ class FriendlyNumbers {
         cli.with {
             s longOpt: 'start', args: 1, argName: 'number', required: true, 'first number of range'
             e longOpt: 'end', args: 1, argName: 'number', required: true, 'last number of range'
+            p longOpt: 'processors', args: 1, argName: 'number', required: true, 'number of processors to use'
         }
 
         def params = cli.parse(args)
 
         if (params) {
-            int poolSize = Runtime.runtime.availableProcessors()
+            int poolSize = params.p as Integer
             def calc = new Calculator(size: poolSize)
             def algo = new Algorithm(
                     start: params.s.toLong(),

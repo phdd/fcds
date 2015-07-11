@@ -8,10 +8,13 @@ class Algorithm {
 
     List<List> buckets
 
+    int size
+
     File input
     File output
 
-    Algorithm(String inputPath, String outputPath) {
+    Algorithm(String inputPath, String outputPath, int poolSize) {
+        size = poolSize
         input = new File(inputPath)
         output = new File(outputPath)
         buckets = (1..ASCII_CHAR_COUNT).collect { [] }
@@ -33,11 +36,11 @@ class Algorithm {
     }
 
     def sortBucketsParallel() {
-        withPool {
+        withPool(size, {
             buckets.eachParallel {
                 it.sort()
             }
-        }
+        })
     }
 
     def bucketsToOutputFile() {
