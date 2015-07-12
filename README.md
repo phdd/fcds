@@ -14,7 +14,7 @@ Get slides @[phdd.github.io/fcds](http://phdd.github.io/fcds)
   
 ## Benchmark
 
-    ![Benchmark for Friendly Numbers](https://raw.githubusercontent.com/phdd/fcds/gh-pages/benchmark.png)
+![Benchmark for Friendly Numbers](https://raw.githubusercontent.com/phdd/fcds/gh-pages/benchmark.png)
 
 ## License
 
