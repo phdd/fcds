@@ -4,10 +4,9 @@ import static groovyx.gpars.GParsPool.withPool
 
 class Algorithm implements FileAware {
 
-    def poolSize
     def inputPath
-
     def capacity
+
     List items
     List table
 
@@ -19,7 +18,7 @@ class Algorithm implements FileAware {
               weight: getAt(1) as Integer ] as Item
         }
 
-        withPool poolSize, {
+        withPool {
             knapsack items, capacity.toInteger()
         }
     }

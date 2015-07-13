@@ -3,6 +3,8 @@
 By Peter Heisig <peter.heisig@tu-dresden.de>. 
 Get slides @[phdd.github.io/fcds](http://phdd.github.io/fcds)
 
+Set thread pool size with e.g. `-Dgpars.poolsize=8` 
+
 ## Build
 
 - build all project packages 
