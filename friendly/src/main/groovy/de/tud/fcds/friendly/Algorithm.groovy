@@ -5,30 +5,38 @@ import groovyx.gpars.actor.DefaultActor
 
 import static groovyx.gpars.GParsPool.withPool
 
-class Algorithm extends DefaultActor {
+class Algorithm extends DefaultActor implements FileAware {
 
-    int start
-    int end
-    int size
+    String inputPath
+    def items
 
     Actor calculator
-    Closure callback
+    Closure friendsFoundCallback
+    Closure rangeChangedCallback
 
     @Override void handleStart() {
         super.handleStart()
-        calculator.send start..end
-        calculator.stop()
+
+        items = read inputPath using { split ' ' }
+        items = map items by { getAt(0).toInteger()..getAt(1).toInteger() }
+
+        items.each {
+            if (it.size() > 1)
+                calculator.send it
+        }
     }
 
     @Override void act() {
-        react {
-            if (it instanceof List)
-                findAllFriendsWithin it
+        loop {
+            react {
+                rangeChangedCallback it.range
+                findAllFriendsWithin it.fractions
+            }
         }
     }
 
     def findAllFriendsWithin(List list) {
-        callback withPool(size, {
+        friendsFoundCallback withPool {
             list.collectParallel { fraction ->
 
                     list.findAll { it == fraction }
@@ -36,7 +44,7 @@ class Algorithm extends DefaultActor {
 
             }.findAllParallel { it.size > 1 }
              .unique()
-        })
+        }
     }
 
 }

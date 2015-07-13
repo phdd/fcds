@@ -9,24 +9,24 @@ class FriendlyNumbers {
         def cli = new CliBuilder(usage: 'friendlyNumbers')
 
         cli.with {
-            s longOpt: 'start', args: 1, argName: 'number', required: true, 'first number of range'
-            e longOpt: 'end', args: 1, argName: 'number', required: true, 'last number of range'
-            p longOpt: 'processors', args: 1, argName: 'number', required: true, 'number of processors to use'
+            i longOpt: 'input', args: 1, argName: 'path', required: true, 'file of space separated ranges'
         }
 
         def params = cli.parse(args)
 
         if (params) {
-            int poolSize = params.p as Integer
-            def calc = new Calculator(size: poolSize)
+            def calc = new Calculator()
             def algo = new Algorithm(
-                    start: params.s.toLong(),
-                    end: params.e.toLong(),
-                    size: poolSize,
+                    inputPath: params.i,
                     calculator: calc,
-                    callback: {
+
+                    rangeChangedCallback: {
+                        println "Number ${it.from} to ${it.to}"
+                    },
+
+                    friendsFoundCallback: {
                         it.each { friends ->
-                            println "${friends.join ', '}"
+                            println "${friends[0]} and ${friends[1]} are FRIENDLY"
                         }
                     })
 

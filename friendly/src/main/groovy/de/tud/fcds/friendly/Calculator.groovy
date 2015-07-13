@@ -7,20 +7,18 @@ import static java.lang.Math.sqrt
 
 class Calculator extends DefaultActor {
 
-    int size
-
     @Override void act() {
         loop {
             react {
-                reply fractionsWithin(it as IntRange)
+                reply([ fractions: fractionsWithin(it as IntRange), range: it ])
             }
         }
     }
 
     def fractionsWithin(IntRange range) {
-        withPool(size, {
+        withPool {
             range.collectParallel { fractionFor it }
-        })
+        }
     }
 
     def fractionFor(int number) {
