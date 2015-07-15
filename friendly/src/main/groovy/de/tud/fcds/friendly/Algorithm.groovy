@@ -36,13 +36,13 @@ class Algorithm extends DefaultActor implements FileAware {
     @Override void act() {
         loop {
             react {
-                println "calc: ${currentTimeMillis() - start}ms"
-                start = currentTimeMillis()
+                // println "calc: ${currentTimeMillis() - start}ms"
+                // start = currentTimeMillis()
 
                 rangeChangedCallback it.range
                 findAllFriendsWithin it.fractions
 
-                println "find: ${currentTimeMillis() - start}ms"
+                // println "find: ${currentTimeMillis() - start}ms"
 
                 if (--jobs < 1) {
                     stop();
