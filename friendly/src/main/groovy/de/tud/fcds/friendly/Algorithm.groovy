@@ -1,5 +1,6 @@
 package de.tud.fcds.friendly
 
+import groovy.transform.CompileStatic
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.DefaultActor
 
@@ -40,7 +41,7 @@ class Algorithm extends DefaultActor implements FileAware {
                 // start = currentTimeMillis()
 
                 rangeChangedCallback it.range
-                findAllFriendsWithin it.fractions
+                findFriendsParallel it.fractions
 
                 // println "find: ${currentTimeMillis() - start}ms"
 
@@ -56,20 +57,30 @@ class Algorithm extends DefaultActor implements FileAware {
         super.handleTermination()
     }
 
-    def findAllFriendsWithin(List list) {
+    def findFriendsParallel(List list) {
         withPool {
-            def friends = []
+            List friends = []
 
-            list.eachWithIndexParallel { fraction, index ->
-                (index..<list.size()).each {
-                    if (list[it].numerator != fraction.numerator && list[it].equals(fraction)) {
-                        friends << [list[it].denominator, fraction.denominator]
-                    }
-                }
+            list.eachWithIndexParallel { Fraction fraction, int index ->
+                friends.addAll findFriends(list, index, fraction)
             }
 
             friendsFoundCallback friends
         }
+    }
+
+    @CompileStatic
+    def findFriends(List list, int index, Fraction fraction) {
+        List friends = []
+
+        (index..<list.size()).each { int it ->
+            Fraction item = list[it] as Fraction
+            if (item.numerator != fraction.numerator && item.ratio == fraction.ratio) {
+                friends << [item.denominator, fraction.denominator]
+            }
+        }
+
+        friends
     }
 
 }

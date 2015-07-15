@@ -22,8 +22,12 @@ class Calculator extends DefaultActor {
     }
 
     def fractionFor(int number) {
-        [   numerator: factorsOf(number).sum(),
-            denominator: number
+        def numerator = factorsOf(number).sum()
+        def denominator = number
+
+        [   numerator: numerator,
+            denominator: denominator,
+            ratio: numerator / denominator
         ] as Fraction
     }
 

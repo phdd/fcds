@@ -7,6 +7,8 @@ import groovy.transform.Immutable
     int numerator
     int denominator
 
+    double ratio
+
     private Fraction reduced
 
     Fraction reduced() {
