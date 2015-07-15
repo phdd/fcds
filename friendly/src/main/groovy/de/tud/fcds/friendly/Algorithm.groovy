@@ -4,6 +4,7 @@ import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.DefaultActor
 
 import static groovyx.gpars.GParsPool.withPool
+import static java.lang.System.currentTimeMillis
 
 class Algorithm extends DefaultActor implements FileAware {
 
@@ -15,6 +16,7 @@ class Algorithm extends DefaultActor implements FileAware {
     Closure rangeChangedCallback
 
     def jobs = 0
+    def start
 
     @Override void handleStart() {
         super.handleStart()
@@ -26,6 +28,7 @@ class Algorithm extends DefaultActor implements FileAware {
             if (it.size() > 1) {
                 calculator.send it
                 jobs++
+                start = currentTimeMillis()
             }
         }
     }
@@ -33,8 +36,13 @@ class Algorithm extends DefaultActor implements FileAware {
     @Override void act() {
         loop {
             react {
+                println "calc: ${currentTimeMillis() - start}ms"
+                start = currentTimeMillis()
+
                 rangeChangedCallback it.range
                 findAllFriendsWithin it.fractions
+
+                println "find: ${currentTimeMillis() - start}ms"
 
                 if (--jobs < 1) {
                     stop();
@@ -49,14 +57,18 @@ class Algorithm extends DefaultActor implements FileAware {
     }
 
     def findAllFriendsWithin(List list) {
-        friendsFoundCallback withPool {
-            list.collectParallel { fraction ->
+        withPool {
+            def friends = []
 
-                    list.findAll { it == fraction }
-                        .collect { it.denominator }
+            list.eachWithIndexParallel { fraction, index ->
+                (index..<list.size()).each {
+                    if (list[it].numerator != fraction.numerator && list[it].equals(fraction)) {
+                        friends << [list[it].denominator, fraction.denominator]
+                    }
+                }
+            }
 
-            }.findAllParallel { it.size > 1 }
-             .unique()
+            friendsFoundCallback friends
         }
     }
 
