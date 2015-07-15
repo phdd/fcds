@@ -14,6 +14,8 @@ class Algorithm extends DefaultActor implements FileAware {
     Closure friendsFoundCallback
     Closure rangeChangedCallback
 
+    def jobs = 0
+
     @Override void handleStart() {
         super.handleStart()
 
@@ -21,8 +23,10 @@ class Algorithm extends DefaultActor implements FileAware {
         items = map items by { getAt(0).toInteger()..getAt(1).toInteger() }
 
         items.each {
-            if (it.size() > 1)
+            if (it.size() > 1) {
                 calculator.send it
+                jobs++
+            }
         }
     }
 
@@ -31,8 +35,17 @@ class Algorithm extends DefaultActor implements FileAware {
             react {
                 rangeChangedCallback it.range
                 findAllFriendsWithin it.fractions
+
+                if (--jobs < 1) {
+                    stop();
+                }
             }
         }
+    }
+
+    @Override void handleTermination() {
+        calculator.stop()
+        super.handleTermination()
     }
 
     def findAllFriendsWithin(List list) {
