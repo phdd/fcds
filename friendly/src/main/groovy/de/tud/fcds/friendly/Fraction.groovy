@@ -28,13 +28,9 @@ import groovy.transform.Immutable
         !v ? u : gcd(v, u % v)
     }
 
-    @Override boolean equals(Object obj) {
-        switch (obj) {
-            case !Fraction: return false
-            case is(this): return true
-            default: return (obj.reduced.denominator == reduced.denominator
-                          && obj.reduced.numerator   == reduced.numerator)
-        }
+    def isEqualTo(Fraction fraction) {
+        return (fraction.reduced.denominator == reduced.denominator
+             && fraction.reduced.numerator   == reduced.numerator)
     }
 
 }

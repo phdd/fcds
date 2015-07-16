@@ -48,7 +48,7 @@ class Algorithm extends DefaultActor implements FileAware {
     def findAllFriendsWithin(List list) {
         friendsFoundCallback withPool {
             list.collectParallel { fraction ->
-                list.findAll { it.numerator != fraction.numerator && it == fraction }
+                list.findAll { it.numerator != fraction.numerator && fraction.isEqualTo(it) }
                     .collect { [ it.denominator, fraction.denominator ] }
 
             }.findAllParallel { it.size == 1 && it.get(0).size > 1 }
