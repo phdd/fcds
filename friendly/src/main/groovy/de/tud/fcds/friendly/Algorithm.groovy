@@ -17,7 +17,6 @@ class Algorithm extends DefaultActor implements FileAware {
     Closure rangeChangedCallback
 
     def jobs = 0
-    def start = 0
 
     @Override void handleStart() {
         super.handleStart()
@@ -29,7 +28,6 @@ class Algorithm extends DefaultActor implements FileAware {
             if (it.size() > 1) {
                 calculator.send it
                 jobs++
-                start = currentTimeMillis()
             }
         }
     }
@@ -37,11 +35,8 @@ class Algorithm extends DefaultActor implements FileAware {
     @Override void act() {
         loop {
             react {
-                println "calc: ${currentTimeMillis() - start}ms"
-                start = currentTimeMillis()
                 rangeChangedCallback it.range
                 findFriendsParallel it.fractions
-                println "find: ${currentTimeMillis() - start}ms"
                 if (--jobs < 1) stop();
             }
         }
