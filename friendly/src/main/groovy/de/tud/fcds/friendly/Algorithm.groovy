@@ -1,9 +1,11 @@
 package de.tud.fcds.friendly
 
+import groovy.transform.CompileStatic
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.DefaultActor
 
 import static groovyx.gpars.GParsPool.withPool
+import static java.lang.System.currentTimeMillis
 
 class Algorithm extends DefaultActor implements FileAware {
 
@@ -15,6 +17,7 @@ class Algorithm extends DefaultActor implements FileAware {
     Closure rangeChangedCallback
 
     def jobs = 0
+    def start = 0
 
     @Override void handleStart() {
         super.handleStart()
@@ -26,6 +29,7 @@ class Algorithm extends DefaultActor implements FileAware {
             if (it.size() > 1) {
                 calculator.send it
                 jobs++
+                start = currentTimeMillis()
             }
         }
     }
@@ -33,8 +37,11 @@ class Algorithm extends DefaultActor implements FileAware {
     @Override void act() {
         loop {
             react {
+                println "calc: ${currentTimeMillis() - start}ms"
+                start = currentTimeMillis()
                 rangeChangedCallback it.range
-                findAllFriendsWithin it.fractions
+                findFriendsParallel it.fractions
+                println "find: ${currentTimeMillis() - start}ms"
                 if (--jobs < 1) stop();
             }
         }
@@ -45,16 +52,30 @@ class Algorithm extends DefaultActor implements FileAware {
         super.handleTermination()
     }
 
-    def findAllFriendsWithin(List list) {
-        friendsFoundCallback withPool {
-            list.collectParallel { fraction ->
-                list.findAll { it.numerator != fraction.numerator && fraction.isEqualTo(it) }
-                    .collect { [ it.denominator, fraction.denominator ] }
+    def findFriendsParallel(List list) {
+        withPool {
+            List friends = []
 
-            }.findAllParallel { it.size == 1 && it.get(0).size > 1 }
-             .collectParallel { it.get(0).sort() }
-             .unique()
+            list.eachWithIndexParallel { Fraction fraction, int index ->
+                friends.addAll findFriends(list, index, fraction)
+            }
+
+            friendsFoundCallback friends
         }
+    }
+
+    @CompileStatic
+    def findFriends(List list, int index, Fraction fraction) {
+        List friends = []
+
+        (index..<list.size()).each { int it ->
+            Fraction item = list[it] as Fraction
+            if (item.numerator != fraction.numerator && fraction.isEqualTo(item)) {
+                friends << [item.denominator, fraction.denominator]
+            }
+        }
+
+        friends
     }
 
 }
