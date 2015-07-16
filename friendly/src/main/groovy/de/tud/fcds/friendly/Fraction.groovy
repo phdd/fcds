@@ -7,25 +7,24 @@ import groovy.transform.Immutable
     int numerator
     int denominator
 
-    double ratio
+    Fraction reduced
 
-    private Fraction reduced
-
-    Fraction reduced() {
-        if (reduced == null)
-            reduced = reduce this
-
-        reduced
+    static from(numerator, denominator) {
+        [   numerator: numerator,
+            denominator: denominator,
+            reduced: reduce(numerator, denominator)
+        ] as Fraction
     }
 
-    private def reduce(Fraction fraction) {
-        def divisor = gcd fraction.numerator, fraction.denominator
+    private static reduce(numerator, denominator) {
+        def divisor = gcd numerator, denominator
+
         [   numerator: numerator / divisor,
             denominator: denominator / divisor
         ] as Fraction
     }
 
-    private def gcd(int u, int v) {
+    private static gcd(int u, int v) {
         !v ? u : gcd(v, u % v)
     }
 
@@ -33,7 +32,8 @@ import groovy.transform.Immutable
         switch (obj) {
             case !Fraction: return false
             case is(this): return true
-            default: return (obj.numerator / obj.denominator == numerator / denominator)
+            default: return (obj.reduced.denominator == reduced.denominator
+                          && obj.reduced.numerator   == reduced.numerator)
         }
     }
 

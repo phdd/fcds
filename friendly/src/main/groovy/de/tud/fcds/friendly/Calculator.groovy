@@ -17,21 +17,13 @@ class Calculator extends DefaultActor {
 
     def fractionsWithin(IntRange range) {
         withPool {
-            range.collectParallel { fractionFor it }
+            range.collectParallel {
+                Fraction.from factorsOf(it).sum(), it
+            }
         }
     }
 
-    def fractionFor(int number) {
-        def numerator = factorsOf(number).sum()
-        def denominator = number
-
-        [   numerator: numerator,
-            denominator: denominator,
-            ratio: numerator / denominator
-        ] as Fraction
-    }
-
-    def factorsOf(Integer target) {
+    def factorsOf(target) {
         if (target == 1) return [1]
         if (target < 4)  return [1, target]
 
